@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			">
+		<!-- 1.开启spring的标签库 -->
+		<context:component-scan base-package="com.baizhi.cmfz.controller"></context:component-scan>
+		<!-- 2.加载mvc标签驱动 -->
+		<mvc:annotation-driven></mvc:annotation-driven>
+		<!-- 3.视图管理器 -->
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/"></property>
+			<property name="suffix" value=".jsp"></property>
+		</bean>
+		<!-- 验证码的配置2.1 -->
+		<bean id="config" class="com.google.code.kaptcha.util.Config">
+			<constructor-arg>
+				<props>
+					<!-- 查询源代码属性 -->
+					<prop key="kaptcha.textproducer.char.length">3</prop>
+				</props>
+			</constructor-arg>
+		</bean>
+		<bean class="com.google.code.kaptcha.impl.DefaultKaptcha">
+			<property name="config" ref="config"></property>
+		</bean>
+		
+		<!-- 通过Mvc标签完成springMVC拦截器的配置 -->
+		<!--<mvc:interceptors>
+			<mvc:interceptor>
+				<mvc:mapping path="/**"/>&lt;!&ndash; 拦截的请求 &ndash;&gt;
+				<mvc:exclude-mapping path="/products/showProduct.do"/>&lt;!&ndash; 不拦截的请求 &ndash;&gt;
+				<bean class="com.baizhi.cmfz.web.interceptor.myInterceptor"></bean>
+			</mvc:interceptor>
+		</mvc:interceptors>-->
+		<!--文件上传-->
+		<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"></bean>
+		<bean class="java.lang.String">
+			<constructor-arg value="/userImages"></constructor-arg>
+		</bean>
+</beans>
